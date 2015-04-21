@@ -1,2 +1,2 @@
 # MetroSim
-Proyecto de simulacion y modelado
+Proyecto para la clase de simulación y modelado
