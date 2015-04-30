@@ -12,6 +12,7 @@ class Metro():
                 for comp in self.componentes:
                         canvas.move(comp, cantidadX, cantidadY)
                 
+                
         def bajarPasajero(self, estacion):
                 pass
         def subirPasajero(self, estacion):
