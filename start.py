@@ -1,27 +1,41 @@
 # -*- coding: utf-8 -*-
 from Tkinter import *
 from sys import argv
-from multiprocessing import Pool
+import random
+import generadores_metrosim as genMS
+import generador 
 import Metro
 import Estacion
 
+semilla = 4564654
+intervalosLlegadas = genMS.generarLlegadas(generador.mcm(semilla, 10))
 estaciones = []
 metros = []
 master = Tk()
 canvas = Canvas(master, width=1280, height=680)
 frecuencia = 5
- 
+ruleta = [0] * 40 + [1] * 10 + [2] * 10 + [3] * 40
     
 def simulacion():
     for E in estaciones:
         if E.hayMetro:
+            E.hayMetro = False
             #Bajar pasajeros
             #subir pasajeros
             #mover metro
-            pass
         else:
-            #generar pasajeros en esa estacion
-            pass
+            tiempo = frecuencia * 60
+            while tiempo > 0:
+                intervalo = random.choice(intervalosLlegadas)
+                print intervalosLlegadas
+                if intervalo < tiempo:
+                    pos = random.choice(ruleta)
+                    tiempo -= intervalo
+                    E.pasajeros[pos] += 1
+                    
+                    canvas.itemconfig(E.componentes[pos+2], text=str(E.pasajeros[pos]))
+                else:
+                    tiempo = 0
     
     for M in metros:
         M.frecuencia -= frecuencia
@@ -34,7 +48,6 @@ def simulacion():
                 M.mover(canvas, 170, 0, estaciones)
                 M.frecuencia = frecuencia
                 
-    print estaciones[1].metro    
     master.after(1000, simulacion)
 
 
@@ -48,7 +61,7 @@ for i in xrange(0, 4):
 
 
 for i in xrange(0, 6):
-    metros.append(Metro.Metro(i, i, 5, 200))
+    metros.append(Metro.Metro(i, i, 5*i, 200))
     metros[i].dibujar(canvas)
 
 

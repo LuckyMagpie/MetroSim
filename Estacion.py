@@ -17,6 +17,7 @@ class Estacion():
                 self.componentes.append(canvas.create_text(75, 680/2 + 55, text='0'))
                 self.componentes.append(canvas.create_text(120, 680/2 + 55, text='0'))
                 self.componentes.append(canvas.create_text(165, 680/2 + 55, text='0'))
+                
 
         def mover(self, canvas, cantidadX, cantidadY):
                 for comp in self.componentes:
