@@ -3,6 +3,8 @@ class Estacion():
                 self.pasajeros = [0, 0, 0, 0]
                 self.subieron = 0
                 self.bajaron= 0
+                self.hayMetro = False
+                self.metro = 0
                 self.componentes = []
 
         def llegaPasajeros(self):
