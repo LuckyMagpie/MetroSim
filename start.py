@@ -9,6 +9,7 @@ import Estacion
 
 semilla = 4564654
 intervalosLlegadas = genMS.generarLlegadas(generador.mcm(semilla, 1000))
+bajadas = genMS.generarBajadas(generador.mcl(semilla, 1000))
 estaciones = []
 metros = []
 master = Tk()
@@ -19,13 +20,14 @@ ruleta = [0] * 40 + [1] * 10 + [2] * 10 + [3] * 40
 def simulacion():
     for E in estaciones:
         if E.hayMetro:
+            metros[E.metro].bajanPasajeros(canvas, master, bajadas, estaciones)
             E.hayMetro = False
-            print E.metro
             #subir pasajeros
-            #mover metro
+            #mover metro?
         else:
-            E.lleganPasajeros(canvas, frecuencia, intervalosLlegadas, ruleta)
-    
+            E.lleganPasajeros(canvas, master, frecuencia, intervalosLlegadas, ruleta)
+
+            
     for M in metros:
         M.frecuencia -= frecuencia
         if M.frecuencia <= 0:
@@ -36,8 +38,10 @@ def simulacion():
             else:
                 M.mover(canvas, 170, 0, estaciones)
                 M.frecuencia = frecuencia
+
+            
           
-    master.after(1000, simulacion)
+    master.after(500, simulacion)
 
 
 canvas.pack()
@@ -49,8 +53,8 @@ for i in xrange(0, 4):
     estaciones[i].mover(canvas, 340 * i, 0)
 
 
-for i in xrange(0, 6):
-    metros.append(Metro.Metro(i, i, 5*i, 200))
+for i in xrange(0, 4):
+    metros.append(Metro.Metro(i, i, 5*(i*2 +1), 200))
     metros[i].dibujar(canvas)
 
 
