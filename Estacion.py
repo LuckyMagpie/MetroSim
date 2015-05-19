@@ -8,6 +8,7 @@ class Estacion():
         self.hayMetro = False
         self.metro = 0
         self.componentes = []
+        self.enEspera = [0, 0, 0, 0]
 
     def lleganPasajeros(self, canvas, master ,frecuencia, intervalosLlegadas, ruleta):
         tiempo = frecuencia * 60
@@ -32,7 +33,11 @@ class Estacion():
         self.componentes.append(canvas.create_text(165, 680/2 + 55, text='0'))
         self.componentes.append(canvas.create_text(220, 680/2 + 80, text='Bajadas: 0', fill='red'))
         self.componentes.append(canvas.create_text(220, 680/2 + 30, text='Subidas: 0', fill='blue'))
-
+        self.componentes.append(canvas.create_text(30, 680/2 + 95, text='0', fill='red'))
+        self.componentes.append(canvas.create_text(75, 680/2 + 95, text='0', fill='red'))
+        self.componentes.append(canvas.create_text(120, 680/2 + 95, text='0', fill='red'))
+        self.componentes.append(canvas.create_text(165, 680/2 + 95, text='0', fill='red'))
+        self.componentes.append(canvas.create_text(100, 680/2 + 115, text='No pudieron abordar', fill='red'))
 
     def mover(self, canvas, cantidadX, cantidadY):
         for comp in self.componentes:
@@ -51,9 +56,11 @@ class Estacion():
                     canvas.itemconfig(metros[self.metro].componentes[i + 4], text=str(metros[self.metro].pasajeros[i]))
                     canvas.itemconfig(self.componentes[7], text='Subidas: ' + str(texto))
                     canvas.update()
-                    canvas.after(150)
+                    canvas.after(50)
+
+            for i in xrange(0, 4):
+                self.enEspera[i] += self.pasajeros[i]
+                canvas.itemconfig(self.componentes[i + 8], text=str(self.enEspera[i]))
 
             metros[self.metro].calcularCap(canvas)
             canvas.update()
-
-

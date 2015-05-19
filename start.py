@@ -7,27 +7,38 @@ import generador
 import Metro
 import Estacion
 
-semilla = 4564654
-intervalosLlegadas = genMS.generarLlegadas(generador.mcm(semilla, 1000))
-bajadas = genMS.generarBajadas(generador.mcl(semilla, 1000))
+try:
+    semilla = int(argv[1])
+except:
+    semilla = int(input("Semilla: "))
+
+try:
+    frecuencia = int(argv[2])
+except:
+    frecuencia = int(input("Frecuencia de llegada del metro (minutos): "))
+
+intervalosLlegadas = genMS.generarLlegadas(generador.mcm(semilla, 2000))
+bajadas = genMS.generarBajadas(generador.mcl(semilla, 2000))
 estaciones = []
 metros = []
 master = Tk()
 canvas = Canvas(master, width=1280, height=680)
-frecuencia = 5
 ruleta = [0] * 40 + [1] * 10 + [2] * 10 + [3] * 40
 
-def simulacion():
+def stop():
+    raw_input("Presiona Enter para continuar")
+
+def simulacion(tiempo):
     for E in estaciones:
         if E.hayMetro:
             metros[E.metro].bajanPasajeros(canvas, master, bajadas, estaciones)
             E.subenPasajeros(canvas, master, metros)
-            metros[E.metro].mover(canvas, 170, 0, estaciones)
             E.hayMetro = False
         else:
             E.lleganPasajeros(canvas, master, frecuencia, intervalosLlegadas, ruleta)
 
-
+    tiempo += frecuencia
+    canvas.itemconfig(tiempoTxt, text='Tiempo: '+ str(tiempo)+ ' minutos')
     for M in metros:
         M.frecuencia -= frecuencia
         if M.frecuencia <= 0:
@@ -39,14 +50,13 @@ def simulacion():
                 M.mover(canvas, 170, 0, estaciones)
                 M.frecuencia = frecuencia
 
-
-
-    master.after(500, simulacion)
-
+    master.after(500, simulacion, tiempo)
 
 canvas.pack()
-b=Button(master, text=u'\u25B6', padx=10, fg='green', font=('TkDefaultFont', 32))
-b.pack(side='left')
+tiempo = 0
+tiempoTxt = canvas.create_text(1280/2, 10, text='Tiempo: 0 minutos', font=('TkDefaultFont', 16))
+stopB = Button(master, text=u'\u25A0', padx=10, fg='red', font=('TkDefaultFont', 32), command=stop)
+stopB.pack(side='left')
 canvas.create_line(0, 680/2, 1280, 680/2, dash=(30), width=3.0)
 
 for i in xrange(0, 4):
@@ -54,13 +64,10 @@ for i in xrange(0, 4):
     estaciones[i].dibujar(canvas, 'Estación '+ str(i+1))
     estaciones[i].mover(canvas, 340 * i, 0)
 
-
 for i in xrange(0, 4):
-    metros.append(Metro.Metro(i, i, 5*(i*2 +1), 20))
+    metros.append(Metro.Metro(i, i, frecuencia*(i*2 + 1), 150))
     metros[i].dibujar(canvas)
 
-
-master.after(1000, simulacion)
-
+master.after(1000, simulacion, tiempo)
 
 mainloop()
