@@ -23,7 +23,7 @@ estaciones = []
 metros = []
 master = Tk()
 canvas = Canvas(master, width=1280, height=680)
-ruleta = [0] * 40 + [1] * 10 + [2] * 10 + [3] * 40
+ruleta = [0] * 35 + [1] * 15 + [2] * 15 + [3] * 35
 
 def stop():
     raw_input("Presiona Enter para continuar")
@@ -34,8 +34,8 @@ def simulacion(tiempo):
             metros[E.metro].bajanPasajeros(canvas, master, bajadas, estaciones)
             E.subenPasajeros(canvas, master, metros)
             E.hayMetro = False
-        else:
-            E.lleganPasajeros(canvas, master, frecuencia, intervalosLlegadas, ruleta)
+            metros[E.metro].mover(canvas, 170, 0, estaciones)
+        E.lleganPasajeros(canvas, master, frecuencia, intervalosLlegadas, ruleta)
 
     tiempo += frecuencia
     canvas.itemconfig(tiempoTxt, text='Tiempo: '+ str(tiempo)+ ' minutos')
