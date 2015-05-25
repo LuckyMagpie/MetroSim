@@ -1,5 +1,3 @@
-import generador
-from sys import argv
 import math
 
 def generarLlegadas(numeros):

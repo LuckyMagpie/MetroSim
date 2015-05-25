@@ -1,5 +1,3 @@
-from sys import argv
-
 def mcl(semilla, cantidad):
     lst = []
     for v in xrange(cantidad):

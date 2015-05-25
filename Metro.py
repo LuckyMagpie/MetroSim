@@ -1,5 +1,6 @@
 import random
 colores = [ 'white', 'red', 'green', 'cyan']
+
 class Metro():
     def __init__(self, color, numero,frecuencia, capacidad):
         self.vagones = 4

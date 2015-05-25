@@ -3,7 +3,7 @@ from Tkinter import *
 from sys import argv
 import random
 import Generadores_metrosim as genMS
-import generador
+import Generador
 import Metro
 import Estacion
 
@@ -17,13 +17,13 @@ try:
 except:
     frecuencia = int(input("Frecuencia de llegada del metro (minutos): "))
 
-intervalosLlegadas = genMS.generarLlegadas(generador.mcm(semilla, 2000))
-bajadas = genMS.generarBajadas(generador.mcl(semilla, 2000))
+intervalosLlegadas = genMS.generarLlegadas(Generador.mcm(semilla, 2000))
+bajadas = genMS.generarBajadas(Generador.mcl(semilla, 2000))
 estaciones = []
 metros = []
 master = Tk()
 canvas = Canvas(master, width=1280, height=680)
-ruleta = [0] * 35 + [1] * 15 + [2] * 15 + [3] * 35
+ruleta = [0] * 30 + [1] * 20 + [2] * 20 + [3] * 30
 
 def stop():
     raw_input("Presiona Enter para continuar")
