@@ -10,13 +10,15 @@ class Estacion():
         self.componentes = []
         self.enEspera = [0, 0, 0, 0]
 
-    def lleganPasajeros(self, canvas, master ,frecuencia, intervalosLlegadas, ruleta):
+    def lleganPasajeros(self, canvas, master ,frecuencia, intervalosLlegadas, ruleta, pico):
         tiempo = frecuencia * 60
         while tiempo > 0:
             intervalo = random.choice(intervalosLlegadas)
             if intervalo < tiempo:
                 pos = random.choice(ruleta)
                 tiempo -= intervalo
+                if pico == 'S' and random.choice([True, False]):
+                    self.pasajeros[pos] += 1
                 self.pasajeros[pos] += 1
                 canvas.itemconfig(self.componentes[pos+2], text=str(self.pasajeros[pos]))
                 canvas.update()

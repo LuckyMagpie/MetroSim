@@ -10,12 +10,17 @@ import Estacion
 try:
     semilla = int(argv[1])
 except:
-    semilla = int(input("Semilla: "))
+    semilla = int(raw_input("Semilla: "))
 
 try:
     frecuencia = int(argv[2])
 except:
-    frecuencia = int(input("Frecuencia de llegada del metro (minutos): "))
+    frecuencia = int(raw_input("Frecuencia de llegada del metro (minutos): "))
+
+try:
+    pico = argv[3]
+except:
+    pico = raw_input("Hora pico (S/N): ")
 
 intervalosLlegadas = genMS.generarLlegadas(Generador.mcm(semilla, 2000))
 bajadas = genMS.generarBajadas(Generador.mcl(semilla, 2000))
@@ -28,14 +33,14 @@ ruleta = [0] * 30 + [1] * 20 + [2] * 20 + [3] * 30
 def stop():
     raw_input("Presiona Enter para continuar")
 
-def simulacion(tiempo):
+def simulacion(tiempo, pico):
     for E in estaciones:
         if E.hayMetro:
             metros[E.metro].bajanPasajeros(canvas, master, bajadas, estaciones)
             E.subenPasajeros(canvas, master, metros)
             E.hayMetro = False
             metros[E.metro].mover(canvas, 170, 0, estaciones)
-        E.lleganPasajeros(canvas, master, frecuencia, intervalosLlegadas, ruleta)
+        E.lleganPasajeros(canvas, master, frecuencia, intervalosLlegadas, ruleta, pico)
 
     tiempo += frecuencia
     canvas.itemconfig(tiempoTxt, text='Tiempo: '+ str(tiempo)+ ' minutos')
@@ -50,7 +55,7 @@ def simulacion(tiempo):
                 M.mover(canvas, 170, 0, estaciones)
                 M.frecuencia = frecuencia
 
-    master.after(500, simulacion, tiempo)
+    master.after(500, simulacion, tiempo, pico)
 
 canvas.pack()
 tiempo = 0
@@ -68,6 +73,6 @@ for i in xrange(0, 4):
     metros.append(Metro.Metro(i, i, frecuencia*(i*2 + 1), 150))
     metros[i].dibujar(canvas)
 
-master.after(1000, simulacion, tiempo)
+master.after(1000, simulacion, tiempo, pico)
 
 mainloop()
